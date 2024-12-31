@@ -25,7 +25,7 @@ jobs:
         run: |
           export HF_HOME=./model/
           huggingface-cli download Salesforce/codegen-350M-mono
-          huggingface-cli download gpt2
+          # huggingface-cli download gpt2
 
       - name: Commit and push changes
         run: |
