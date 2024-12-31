@@ -23,6 +23,7 @@ jobs:
 
       - name: Run a multi-line script
         run: |
+          export HF_HOME=./model/
           huggingface-cli download Salesforce/codegen-350M-mono
           huggingface-cli download gpt2
 
