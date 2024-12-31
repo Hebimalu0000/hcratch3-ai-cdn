@@ -15,22 +15,27 @@ jobs:
         with:
           python-version: 3.9
 
-      - name: install
+      - name: Install git-lfs
+        run: |
+          sudo apt-get install git-lfs
+          git lfs install
+
+      - name: Install huggingface_hub
         run: pip install -U "huggingface_hub[cli]"
 
-      - name: Run a one-line script
+      - name: Hugging Face login
         run: huggingface-cli login --token ${{ secrets.TOKEN }} --add-to-git-credential
 
-      - name: Run a multi-line script
+      - name: Download model with LFS
         run: |
           export HF_HOME=./model/
-          huggingface-cli download Salesforce/codegen-350M-mono
-          # huggingface-cli download gpt2
+          huggingface-cli download Salesforce/codegen-350M-mono --cache-dir $HF_HOME
+          git lfs pull
 
       - name: Commit and push changes
         run: |
-          sudo git config user.name "auto-push"
-          sudo git config user.email "auto-push@example.com"
-          sudo git add .
-          sudo git commit -m "auto push from ci" || echo "No changes to commit"
-          sudo git push
+          git config user.name "auto-push"
+          git config user.email "auto-push@example.com"
+          git add .
+          git commit -m "Auto push from CI" || echo "No changes to commit"
+          git push
